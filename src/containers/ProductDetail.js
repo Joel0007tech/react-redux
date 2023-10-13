@@ -1,31 +1,31 @@
-import React,{useEffect} from 'react';
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectedProducts } from '../redux/actions/productAction';
-
+import React, { useEffect } from "react";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectedProduct,
+  removeSelectedProduct,
+} from "../redux/actions/productAction";
 const ProductDetail = () => {
-    const product = useSelector((state) => state.product);
-  
-    const {productId} = useParams();
-    const dispatch = useDispatch();
-    console.log(productId);
+  const { productId } = useParams();
+  let product = useSelector((state) => state.product);
+  const { image, title, price, category, description } = product;
+  const dispatch = useDispatch();
+  const fetchProductDetail = async (id) => {
+    const response = await axios
+      .get(`https://fakestoreapi.com/products/${id}`)
+      .catch((err) => {
+        console.log("Err: ", err);
+      });
+    dispatch(selectedProduct(response.data));
+  };
 
-    const fetchProductDetail = async () => {
-        const response =await axios
-        .get(`https://fakestoreapi.com/products/${productId}`)
-        .catch(err => {console.log("Err", err)
-    });
-
-    dispatch(selectedProducts(response.data));
+  useEffect(() => {
+    if (productId && productId !== "") fetchProductDetail(productId);
+    return () => {
+      dispatch(removeSelectedProduct());
     };
-    useEffect(() => {
-      if (productId && productId !== "") fetchProductDetail(productId);
-    }, [productId]);
-
-
-    const productDet = product.map((product) => {
-        const { title, image, price, category, description} = product;
+  }, [productId]);
   return (
     <div className="ui grid container">
       {Object.keys(product).length === 0 ? (
@@ -36,12 +36,12 @@ const ProductDetail = () => {
             <div className="ui vertical divider">AND</div>
             <div className="middle aligned row">
               <div className="column lp">
-                <img src={image} alt={title} className="ui fluid image" />
+                <img className="ui fluid image" src={image} />
               </div>
               <div className="column rp">
                 <h1>{title}</h1>
                 <h2>
-                  <a className="ui teal tag label" href='https://'>${price}</a>
+                  <a className="ui teal tag label">${price}</a>
                 </h2>
                 <h3 className="ui brown block header">{category}</h3>
                 <p>{description}</p>
@@ -57,13 +57,7 @@ const ProductDetail = () => {
         </div>
       )}
     </div>
-  )
-      })
-      return (
-        <>
-        {productDet}
-        </>
-      )
-}
+  );
+};
 
-export default ProductDetail
+export default ProductDetail;
