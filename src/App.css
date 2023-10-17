@@ -96,12 +96,27 @@
 }
 
 @media screen  and (max-width:428px) {
+  * {
+    font-family: "Roboto", sans-serif;
+    padding: 0;
+    margin: 0;
+  }
+  
  .ui.grid.container{
   display: flex;
   flex-direction: column;
+  margin-top: 20px;
+  gap: 10px;
  }
- .ui.grid > .row {
-  background:yellow;
+ .ui.cards{
+  width: 300px;
+  padding: 20px;
+  background: #fff;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  
 }
 }
 
