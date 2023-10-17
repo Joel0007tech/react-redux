@@ -96,10 +96,13 @@
 }
 
 @media screen  and (max-width:428px) {
-  body{
-    display: flex;
-    flex-direction: column;
-  }
+ .ui.grid.container{
+  display: flex;
+  flex-direction: column;
+ }
+ .ui.grid > .row {
+  background:yellow;
+}
 }
 
 
